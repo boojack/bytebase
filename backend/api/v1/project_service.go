@@ -2076,10 +2076,12 @@ func (*ProjectService) validateBindings(bindings []*v1pb.Binding, roles []*v1pb.
 			return err
 		}
 
-		rolesToValidate := []string{fmt.Sprintf("roles/%s", api.ProjectQuerier), fmt.Sprintf("roles/%s", api.ProjectExporter)}
-		if binding.Condition != nil && binding.Condition.Expression != "" && slices.Contains(rolesToValidate, binding.Role) {
-			if err := validateIAMPolicyExpression(binding.Condition.Expression, maximumRoleExpiration); err != nil {
-				return err
+		if maximumRoleExpiration != nil && binding.Condition != nil && binding.Condition.Expression != "" {
+			rolesToValidate := []string{fmt.Sprintf("roles/%s", api.ProjectQuerier), fmt.Sprintf("roles/%s", api.ProjectExporter)}
+			if slices.Contains(rolesToValidate, binding.Role) {
+				if err := validateIAMPolicyExpression(binding.Condition.Expression, maximumRoleExpiration); err != nil {
+					return err
+				}
 			}
 		}
 	}
