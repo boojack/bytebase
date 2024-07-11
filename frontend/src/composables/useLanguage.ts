@@ -27,18 +27,10 @@ const useLanguage = () => {
     }
   };
 
-  const toggleLocales = () => {
-    const locales = availableLocales;
-    const nextLocale =
-      locales[(locales.indexOf(locale.value) + 1) % locales.length];
-    setLocale(nextLocale);
-  };
-
   return {
     locale,
     availableLocales,
     setLocale,
-    toggleLocales,
   };
 };
 
