@@ -40,13 +40,8 @@ export const getUserEmailListInBinding = ({
       if (ignoreGroup) {
         continue;
       }
-      // Use getOrFetchGroupByIdentifier to handle missing groups due to permissions/race conditions
       const group = groupStore.getGroupByIdentifier(member);
       if (!group) {
-        // Log the missing group for debugging
-        console.warn(
-          `Group not found in approval calculation: ${member}. This may prevent group members from approving.`
-        );
         continue;
       }
 
