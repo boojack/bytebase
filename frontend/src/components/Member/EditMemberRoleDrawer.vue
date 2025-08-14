@@ -156,9 +156,14 @@ const updateRoleBinding = async () => {
 
   const batchPatch = [];
   if (props.member) {
+    // When editing existing members, preserve all existing roles and merge with selected ones
+    const existedRoles = workspaceStore.findRolesByMember({
+      member: props.member.binding,
+      ignoreGroup: true,
+    });
     batchPatch.push({
       member: props.member.binding,
-      roles: [...state.roles],
+      roles: [...new Set([...state.roles, ...existedRoles])],
     });
   } else {
     for (const member of memberListInBinding.value) {
